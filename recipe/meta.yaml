@@ -1,28 +1,30 @@
 {% set name = "haystack-experimental" %}
-{% set version = "0.2.0" %}
+{% set version = "0.19.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/haystack_experimental-{{ version }}.tar.gz
-  sha256: 393c543f29c50ea21365f5d032cd8b6bca10256016a3791546f1acc7ac623b07
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/haystack_experimental-{{ version }}.tar.gz
+  sha256: 194f9074f9184a20d2f4efa7b5082dd33118bc886f87937d13e33616cd549067
 
 build:
-  noarch: python
+  skip: true  # [py<310]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
 
 requirements:
   host:
-    - python >=3.8
+    - python
     - hatchling >=1.8.0
     - hatch-vcs
     - pip
   run:
-    - python >=3.8
-    - haystack-ai
+    - python
+    # Upstream has no version pin, but we pin to ensure compatibility
+    # https://github.com/deepset-ai/haystack-experimental/blob/main/pyproject.toml#L17
+    - haystack-ai >=2.25.0
 
 test:
   imports:
@@ -35,8 +37,15 @@ test:
 about:
   home: https://github.com/deepset-ai/haystack-experimental
   summary: Experimental components and features for the Haystack LLM framework.
+  description: |
+    Provides experimental components and features for the Haystack LLM framework.
+    These are early-access features with a 3-month lifespan before promotion to
+    haystack-ai core or removal.
   license: Apache-2.0
+  license_family: Apache
   license_file: LICENSE
+  doc_url: https://docs.haystack.deepset.ai/docs/intro
+  dev_url: https://github.com/deepset-ai/haystack-experimental
 
 extra:
   recipe-maintainers:
